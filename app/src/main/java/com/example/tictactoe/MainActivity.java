@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -50,26 +52,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (player1Turn){
             ((Button) v).setText("X");
-        }
-        else {
-            ((Button) v).setText("O");
-        }
-        countRound++;
-        if (checkForWin()){
-            if (player1Turn){
+            countRound++;
+            if (checkForWin()){
                 player1Win();
+                player2Turn = false;
             }
-            else{
+        }
+        if (player2Turn && countRound !=9){
+            artificielInteligence();
+            countRound++;
+            if (checkForWin()){
                 player2Wins();
             }
         }
-        else if (countRound == 9){
+        if (countRound == 9){
             draw();
         }
-        else {
-            player1Turn =! player1Turn;
-        }
     }
+    private void artificielInteligence() {
+        String[][] filed = new String[3][3];
+        for (int i = 0 ; i < 3 ; i++){
+            for (int j = 0 ; j < 3 ; j++){
+                filed[i][j] =  buttons[i][j].getText().toString();
+            }
+        }
+        Random random = new Random();
+        int ii;
+        int jj;
+        do {
+            ii = random.nextInt(3);
+            jj = random.nextInt(3);
+        }while (!buttons[ii][jj].getText().equals(""));
+        System.out.println(ii+""+jj);
+        buttons[ii][jj].setText("O");
+    }
+
     private boolean checkForWin(){
         String[][] filed = new String[3][3];
         for (int i = 0 ; i < 3 ; i++){
