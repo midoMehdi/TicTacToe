@@ -82,6 +82,124 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         do {
             ii = random.nextInt(3);
             jj = random.nextInt(3);
+            for (int i = 0 ; i < 3 ; i++){
+
+                /** Partie Defense*/
+                /**
+                 * Check horizentalement*/
+                if (buttons[i][0].getText().equals("X") && filed[i][0].equals(filed[i][1]) && buttons[i][2].getText().equals("")) {
+                    ii = i;
+                    jj = 2;
+                }
+                else if (buttons[i][0].getText().equals("X") && filed[i][0].equals(filed[i][2]) && buttons[i][1].getText().equals("")){
+                    ii = i;
+                    jj = 1;
+                }
+                else if (buttons[i][1].getText().equals("X") && filed[i][1].equals(filed[i][2]) && buttons[i][0].getText().equals("")){
+                    ii = i;
+                    jj = 0;
+                }
+                /**
+                 * Check verticalement*/
+                if (buttons[0][i].getText().equals("X") && filed[0][i].equals(filed[1][i]) && buttons[2][i].getText().equals("")) {
+                    ii = 2;
+                    jj = i;
+                }
+                else if (buttons[0][i].getText().equals("X") && filed[0][i].equals(filed[2][i]) && buttons[1][i].getText().equals("")){
+                    ii = 1;
+                    jj = i;
+                }
+                else if (buttons[1][i].getText().equals("X") && filed[1][i].equals(filed[2][i]) && buttons[0][i].getText().equals("")){
+                    ii = 0;
+                    jj = i;
+                }
+                /**
+                 * Check diagonalement  première forme"\" */
+                if (buttons[0][0].getText().equals("X") && filed[0][0].equals(filed[1][1]) && buttons[2][2].getText().equals("")){
+                    ii = 2;
+                    jj = 2;
+                }
+                else if (buttons[0][0].getText().equals("X") && filed[0][0].equals(filed[2][2]) && buttons[1][1].getText().equals("")){
+                    ii = 1;
+                    jj = 1;
+                }
+                else if (buttons[1][1].getText().equals("X") && filed[1][1].equals(filed[2][2]) && buttons[0][0].getText().equals("")){
+                    ii = 0;
+                    jj = 0;
+                }
+                /**
+                 * Check diagonalement  deuxieme forme"/" */
+                if (buttons[0][2].getText().equals("X") && filed[0][2].equals(filed[1][1]) && buttons[2][0].getText().equals("")){
+                    ii = 2;
+                    jj = 0;
+                }
+                else if (buttons[0][2].getText().equals("X") && filed[0][2].equals(filed[2][0]) && buttons[1][1].getText().equals("")){
+                    ii = 1;
+                    jj = 1;
+                }
+                else if (buttons[1][1].getText().equals("X") && filed[1][1].equals(filed[2][0]) && buttons[0][2].getText().equals("")){
+                    ii = 0;
+                    jj = 2;
+                }
+            }
+
+            for (int i = 0 ; i < 2 ; i++){
+                /** Partie Attaque*/
+                if (buttons[i][0].getText().equals("O") && filed[i][0].equals(filed[i][1]) && buttons[i][2].getText().equals("")) {
+                    ii = i;
+                    jj = 2;
+                }
+                else if (buttons[i][0].getText().equals("O") && filed[i][0].equals(filed[i][2]) && buttons[i][1].getText().equals("")){
+                    ii = i;
+                    jj = 1;
+                }
+                else if (buttons[i][1].getText().equals("O") && filed[i][1].equals(filed[i][2]) && buttons[i][0].getText().equals("")){
+                    ii = i;
+                    jj = 0;
+                }
+                /**
+                 * Check verticalement*/
+                if (buttons[0][i].getText().equals("O") && filed[0][i].equals(filed[1][i]) && buttons[2][i].getText().equals("")) {
+                    ii = 2;
+                    jj = i;
+                }
+                else if (buttons[0][i].getText().equals("O") && filed[0][i].equals(filed[2][i]) && buttons[1][i].getText().equals("")){
+                    ii = 1;
+                    jj = i;
+                }
+                else if (buttons[1][i].getText().equals("O") && filed[1][i].equals(filed[2][i]) && buttons[0][i].getText().equals("")){
+                    ii = 0;
+                    jj = i;
+                }
+                /**
+                 * Check diagonalement  première forme"\" */
+                if (buttons[0][0].getText().equals("O") && filed[0][0].equals(filed[1][1]) && buttons[2][2].getText().equals("")){
+                    ii = 2;
+                    jj = 2;
+                }
+                else if (buttons[0][0].getText().equals("O") && filed[0][0].equals(filed[2][2]) && buttons[1][1].getText().equals("")){
+                    ii = 1;
+                    jj = 1;
+                }
+                else if (buttons[1][1].getText().equals("O") && filed[1][1].equals(filed[2][2]) && buttons[0][0].getText().equals("")){
+                    ii = 0;
+                    jj = 0;
+                }
+                /**
+                 * Check diagonalement  deuxieme forme"/" */
+                if (buttons[0][2].getText().equals("O") && filed[0][2].equals(filed[1][1]) && buttons[2][0].getText().equals("")){
+                    ii = 2;
+                    jj = 0;
+                }
+                else if (buttons[0][2].getText().equals("O") && filed[0][2].equals(filed[2][0]) && buttons[1][1].getText().equals("")){
+                    ii = 1;
+                    jj = 1;
+                }
+                else if (buttons[1][1].getText().equals("O") && filed[1][1].equals(filed[2][0]) && buttons[0][2].getText().equals("")){
+                    ii = 0;
+                    jj = 2;
+                }
+            }
         }while (!buttons[ii][jj].getText().equals(""));
         System.out.println(ii+""+jj);
         buttons[ii][jj].setText("O");
@@ -125,16 +243,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this,"PLayer 1 wins",Toast.LENGTH_LONG).show();
         updatePointsText();
         resetBoard();
+        init();
     }
     private void player2Wins(){
         player2Points++;
         Toast.makeText(this,"PLayer 2 wins!",Toast.LENGTH_LONG).show();
         updatePointsText();
         resetBoard();
+        init();
     }
     private void draw(){
         Toast.makeText(this,"Draw ! ",Toast.LENGTH_LONG).show();
         resetBoard();
+        init();
     }
     private void updatePointsText() {
         textViewPlayer1.setText("Player1 : "+player1Points);
@@ -146,7 +267,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 buttons[i][j].setText("");
             }
         }
+    }
+    private void init(){
         countRound = 0;
         player1Turn = true;
+        player2Turn = true;
     }
 }
