@@ -3,6 +3,7 @@ package com.example.tictactoe;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +23,13 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     Bundle bundle;
     int codePlayerVsPlayer = 10; //initialisation différente du vrai code.
     int codePlayerVsComputer = 11;//initialisation différente du vrai code.
+    MediaPlayer musicNCS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        playMusic();
         textViewPlayer1 = findViewById(R.id.textViewP1);
         textViewPLayer2 = findViewById(R.id.textViewP2);
         resetButton = findViewById(R.id.button_reset);
@@ -323,7 +326,27 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     }
 
     public void BackFirstActivity(View view) {
+        musicNCS.stop();
         Intent myIntent = new Intent(this,MainActivity.class);
         startActivity(myIntent);
+    }
+    public void playMusic(){
+        if (musicNCS == null){
+            musicNCS = MediaPlayer.create(this,R.raw.song);
+        }
+        musicNCS.start();
+    }
+
+    public void stopMusic(View view) {
+        if (musicNCS != null){
+            musicNCS.stop();
+            musicNCS = null;
+        }
+        else {
+            musicNCS = MediaPlayer.create(this,R.raw.song);
+            musicNCS.start();
+
+        }
+
     }
 }
