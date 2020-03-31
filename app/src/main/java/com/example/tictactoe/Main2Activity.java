@@ -2,14 +2,13 @@ package com.example.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Random;
-
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
@@ -20,14 +19,21 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     private TextView textViewPlayer1;
     private TextView textViewPLayer2;
     private Button resetButton;
+    Bundle bundle;
+    int codePlayerVsPlayer = 10; //initialisation différente du vrai code.
+    int codePlayerVsComputer = 11;//initialisation différente du vrai code.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         textViewPlayer1 = findViewById(R.id.textViewP1);
         textViewPLayer2 = findViewById(R.id.textViewP2);
         resetButton = findViewById(R.id.button_reset);
+        bundle = getIntent().getExtras();
+        codePlayerVsPlayer = bundle.getInt("playerVsPlayer");
+        codePlayerVsComputer = bundle.getInt("playerVsComputer");
+        System.out.println("yeeeeeeeeeeeeees"+codePlayerVsComputer);
         for (int i = 0 ; i < 3 ; i++){
             for (int j = 0 ; j < 3 ; j++){
                 String buttonId = "button_"+i + j;
@@ -45,28 +51,56 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+    private void playerVSplayer(View v){
+        if (player1Turn){
+            ((Button) v).setText("X");
+        }
+        else {
+            ((Button) v).setText("O");
+        }
+        countRound++;
+        if (checkForWin()){
+            if (player1Turn){
+                player1Win();
+            }
+            else{
+                player2Wins();
+            }
+        }
+        else if (countRound == 9){
+            draw();
+        }
+        else {
+            player1Turn =! player1Turn;
+        }
+    }
     @Override
     public void onClick(View v) {
         if (!((Button) v).getText().equals("")){
             return;
         }
-        if (player1Turn){
-            ((Button) v).setText("X");
-            countRound++;
-            if (checkForWin()){
-                player1Win();
-                player2Turn = false;
+        if (codePlayerVsPlayer == 2){
+            playerVSplayer(v);
+
+        }else {
+            if (player1Turn){
+                ((Button) v).setText("X");
+                countRound++;
+                if (checkForWin()){
+                    player1Win();
+                }
             }
-        }
-        if (player2Turn && countRound !=9){
-            artificielInteligence();
-            countRound++;
-            if (checkForWin()){
-                player2Wins();
+            if ( player2Turn && countRound !=9){
+                artificielInteligence();
+                countRound++;
+                if (checkForWin()){
+                    player2Wins();
+                }
             }
-        }
-        if (countRound == 9){
-            draw();
+
+            if (countRound == 9){
+                draw();
+            }
         }
     }
     private void artificielInteligence() {
@@ -82,129 +116,143 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         do {
             ii = random.nextInt(3);
             jj = random.nextInt(3);
-            for (int i = 0 ; i < 3 ; i++){
-
-                /** Partie Defense*/
-                /**
-                 * Check horizentalement*/
-                if (buttons[i][0].getText().equals("X") && filed[i][0].equals(filed[i][1]) && buttons[i][2].getText().equals("")) {
-                    ii = i;
-                    jj = 2;
-                }
-                else if (buttons[i][0].getText().equals("X") && filed[i][0].equals(filed[i][2]) && buttons[i][1].getText().equals("")){
-                    ii = i;
-                    jj = 1;
-                }
-                else if (buttons[i][1].getText().equals("X") && filed[i][1].equals(filed[i][2]) && buttons[i][0].getText().equals("")){
-                    ii = i;
-                    jj = 0;
-                }
-                /**
-                 * Check verticalement*/
-                if (buttons[0][i].getText().equals("X") && filed[0][i].equals(filed[1][i]) && buttons[2][i].getText().equals("")) {
-                    ii = 2;
-                    jj = i;
-                }
-                else if (buttons[0][i].getText().equals("X") && filed[0][i].equals(filed[2][i]) && buttons[1][i].getText().equals("")){
-                    ii = 1;
-                    jj = i;
-                }
-                else if (buttons[1][i].getText().equals("X") && filed[1][i].equals(filed[2][i]) && buttons[0][i].getText().equals("")){
-                    ii = 0;
-                    jj = i;
-                }
-                /**
-                 * Check diagonalement  première forme"\" */
-                if (buttons[0][0].getText().equals("X") && filed[0][0].equals(filed[1][1]) && buttons[2][2].getText().equals("")){
-                    ii = 2;
-                    jj = 2;
-                }
-                else if (buttons[0][0].getText().equals("X") && filed[0][0].equals(filed[2][2]) && buttons[1][1].getText().equals("")){
-                    ii = 1;
-                    jj = 1;
-                }
-                else if (buttons[1][1].getText().equals("X") && filed[1][1].equals(filed[2][2]) && buttons[0][0].getText().equals("")){
-                    ii = 0;
-                    jj = 0;
-                }
-                /**
-                 * Check diagonalement  deuxieme forme"/" */
-                if (buttons[0][2].getText().equals("X") && filed[0][2].equals(filed[1][1]) && buttons[2][0].getText().equals("")){
-                    ii = 2;
-                    jj = 0;
-                }
-                else if (buttons[0][2].getText().equals("X") && filed[0][2].equals(filed[2][0]) && buttons[1][1].getText().equals("")){
-                    ii = 1;
-                    jj = 1;
-                }
-                else if (buttons[1][1].getText().equals("X") && filed[1][1].equals(filed[2][0]) && buttons[0][2].getText().equals("")){
-                    ii = 0;
-                    jj = 2;
-                }
-            }
-
-            for (int i = 0 ; i < 2 ; i++){
-                /** Partie Attaque*/
-                if (buttons[i][0].getText().equals("O") && filed[i][0].equals(filed[i][1]) && buttons[i][2].getText().equals("")) {
-                    ii = i;
-                    jj = 2;
-                }
-                else if (buttons[i][0].getText().equals("O") && filed[i][0].equals(filed[i][2]) && buttons[i][1].getText().equals("")){
-                    ii = i;
-                    jj = 1;
-                }
-                else if (buttons[i][1].getText().equals("O") && filed[i][1].equals(filed[i][2]) && buttons[i][0].getText().equals("")){
-                    ii = i;
-                    jj = 0;
-                }
-                /**
-                 * Check verticalement*/
-                if (buttons[0][i].getText().equals("O") && filed[0][i].equals(filed[1][i]) && buttons[2][i].getText().equals("")) {
-                    ii = 2;
-                    jj = i;
-                }
-                else if (buttons[0][i].getText().equals("O") && filed[0][i].equals(filed[2][i]) && buttons[1][i].getText().equals("")){
-                    ii = 1;
-                    jj = i;
-                }
-                else if (buttons[1][i].getText().equals("O") && filed[1][i].equals(filed[2][i]) && buttons[0][i].getText().equals("")){
-                    ii = 0;
-                    jj = i;
-                }
-                /**
-                 * Check diagonalement  première forme"\" */
-                if (buttons[0][0].getText().equals("O") && filed[0][0].equals(filed[1][1]) && buttons[2][2].getText().equals("")){
-                    ii = 2;
-                    jj = 2;
-                }
-                else if (buttons[0][0].getText().equals("O") && filed[0][0].equals(filed[2][2]) && buttons[1][1].getText().equals("")){
-                    ii = 1;
-                    jj = 1;
-                }
-                else if (buttons[1][1].getText().equals("O") && filed[1][1].equals(filed[2][2]) && buttons[0][0].getText().equals("")){
-                    ii = 0;
-                    jj = 0;
-                }
-                /**
-                 * Check diagonalement  deuxieme forme"/" */
-                if (buttons[0][2].getText().equals("O") && filed[0][2].equals(filed[1][1]) && buttons[2][0].getText().equals("")){
-                    ii = 2;
-                    jj = 0;
-                }
-                else if (buttons[0][2].getText().equals("O") && filed[0][2].equals(filed[2][0]) && buttons[1][1].getText().equals("")){
-                    ii = 1;
-                    jj = 1;
-                }
-                else if (buttons[1][1].getText().equals("O") && filed[1][1].equals(filed[2][0]) && buttons[0][2].getText().equals("")){
-                    ii = 0;
-                    jj = 2;
-                }
-            }
         }while (!buttons[ii][jj].getText().equals(""));
+        for (int i = 0 ; i < 3 ; i++){
+
+            /** Partie Defense pour ne pas perdre pour le deuxieme joueur
+             * */
+
+
+            /**
+             * Check horizentalement
+             * */
+            if (buttons[i][0].getText().equals("X") && filed[i][0].equals(filed[i][1]) && buttons[i][2].getText().equals("")) {
+                ii = i;
+                jj = 2;
+            }
+            else if (buttons[i][0].getText().equals("X") && filed[i][0].equals(filed[i][2]) && buttons[i][1].getText().equals("")){
+                ii = i;
+                jj = 1;
+            }
+            else if (buttons[i][1].getText().equals("X") && filed[i][1].equals(filed[i][2]) && buttons[i][0].getText().equals("")){
+                ii = i;
+                jj = 0;
+            }
+            /**
+             * Check verticalement
+             * */
+            if (buttons[0][i].getText().equals("X") && filed[0][i].equals(filed[1][i]) && buttons[2][i].getText().equals("")) {
+                ii = 2;
+                jj = i;
+            }
+            else if (buttons[0][i].getText().equals("X") && filed[0][i].equals(filed[2][i]) && buttons[1][i].getText().equals("")){
+                ii = 1;
+                jj = i;
+            }
+            else if (buttons[1][i].getText().equals("X") && filed[1][i].equals(filed[2][i]) && buttons[0][i].getText().equals("")){
+                ii = 0;
+                jj = i;
+            }
+            /**
+             * Check diagonalement  première forme"\"
+             * */
+            if (buttons[0][0].getText().equals("X") && filed[0][0].equals(filed[1][1]) && buttons[2][2].getText().equals("")){
+                ii = 2;
+                jj = 2;
+            }
+            else if (buttons[0][0].getText().equals("X") && filed[0][0].equals(filed[2][2]) && buttons[1][1].getText().equals("")){
+                ii = 1;
+                jj = 1;
+            }
+            else if (buttons[1][1].getText().equals("X") && filed[1][1].equals(filed[2][2]) && buttons[0][0].getText().equals("")){
+                ii = 0;
+                jj = 0;
+            }
+            /**
+             * Check diagonalement  deuxieme forme"/"
+             * */
+            if (buttons[0][2].getText().equals("X") && filed[0][2].equals(filed[1][1]) && buttons[2][0].getText().equals("")){
+                ii = 2;
+                jj = 0;
+            }
+            else if (buttons[0][2].getText().equals("X") && filed[0][2].equals(filed[2][0]) && buttons[1][1].getText().equals("")){
+                ii = 1;
+                jj = 1;
+            }
+            else if (buttons[1][1].getText().equals("X") && filed[1][1].equals(filed[2][0]) && buttons[0][2].getText().equals("")){
+                ii = 0;
+                jj = 2;
+            }
+        }
+
+        /**
+         *
+         * Partie Attaque pour gagner ppour le deuxieme joueur
+         * */
+
+
+        for (int i = 0 ; i < 3 ; i++){
+            if (buttons[i][0].getText().equals("O") && filed[i][0].equals(filed[i][1]) && buttons[i][2].getText().equals("")) {
+                ii = i;
+                jj = 2;
+            }
+            else if (buttons[i][0].getText().equals("O") && filed[i][0].equals(filed[i][2]) && buttons[i][1].getText().equals("")){
+                ii = i;
+                jj = 1;
+            }
+            else if (buttons[i][1].getText().equals("O") && filed[i][1].equals(filed[i][2]) && buttons[i][0].getText().equals("")){
+                ii = i;
+                jj = 0;
+            }
+            /**
+             * Check verticalement
+             * */
+            if (buttons[0][i].getText().equals("O") && filed[0][i].equals(filed[1][i]) && buttons[2][i].getText().equals("")) {
+                ii = 2;
+                jj = i;
+            }
+            else if (buttons[0][i].getText().equals("O") && filed[0][i].equals(filed[2][i]) && buttons[1][i].getText().equals("")){
+                ii = 1;
+                jj = i;
+            }
+            else if (buttons[1][i].getText().equals("O") && filed[1][i].equals(filed[2][i]) && buttons[0][i].getText().equals("")){
+                ii = 0;
+                jj = i;
+            }
+            /**
+             * Check diagonalement  première forme"\"
+             * */
+            if (buttons[0][0].getText().equals("O") && filed[0][0].equals(filed[1][1]) && buttons[2][2].getText().equals("")){
+                ii = 2;
+                jj = 2;
+            }
+            else if (buttons[0][0].getText().equals("O") && filed[0][0].equals(filed[2][2]) && buttons[1][1].getText().equals("")){
+                ii = 1;
+                jj = 1;
+            }
+            else if (buttons[1][1].getText().equals("O") && filed[1][1].equals(filed[2][2]) && buttons[0][0].getText().equals("")){
+                ii = 0;
+                jj = 0;
+            }
+            /**
+             * Check diagonalement  deuxieme forme"/"
+             * */
+            if (buttons[0][2].getText().equals("O") && filed[0][2].equals(filed[1][1]) && buttons[2][0].getText().equals("")){
+                ii = 2;
+                jj = 0;
+            }
+            else if (buttons[0][2].getText().equals("O") && filed[0][2].equals(filed[2][0]) && buttons[1][1].getText().equals("")){
+                ii = 1;
+                jj = 1;
+            }
+            else if (buttons[1][1].getText().equals("O") && filed[1][1].equals(filed[2][0]) && buttons[0][2].getText().equals("")){
+                ii = 0;
+                jj = 2;
+            }
+        }
         System.out.println(ii+""+jj);
         buttons[ii][jj].setText("O");
     }
-
     private boolean checkForWin(){
         String[][] filed = new String[3][3];
         for (int i = 0 ; i < 3 ; i++){
@@ -272,5 +320,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         countRound = 0;
         player1Turn = true;
         player2Turn = true;
+    }
+
+    public void BackFirstActivity(View view) {
+        Intent myIntent = new Intent(this,MainActivity.class);
+        startActivity(myIntent);
     }
 }
