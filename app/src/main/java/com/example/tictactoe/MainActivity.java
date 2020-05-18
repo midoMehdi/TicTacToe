@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,11 +23,16 @@ public class MainActivity extends AppCompatActivity {
     Button buttonGo;
     int radioButtonSelectedId;
     RadioButton radioButton;
+    TextView logoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        logoText = findViewById(R.id.logoText);
+        Shader shader = new LinearGradient(0, 0, 0, logoText.getTextSize(), Color.parseColor("#ffb74d"), Color.parseColor("#fff8e1"),
+                Shader.TileMode.REPEAT);
+        logoText.getPaint().setShader(shader);
         radioGroup = findViewById(R.id.RadioGroup);
         buttonGo = findViewById(R.id.Go);
 
