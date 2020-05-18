@@ -2,37 +2,60 @@ package com.example.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    Button playerVsPlayer;
-    Button playerVsComputer;
     Intent myIntent;
-    Bundle bundle = new Bundle();
+    RadioGroup radioGroup;
+    Button buttonGo;
+    int radioButtonSelectedId;
+    RadioButton radioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        playerVsPlayer = findViewById(R.id.plyr1VsPlyr2);
-        playerVsComputer = findViewById(R.id.plyr1Pc);
+        radioGroup = findViewById(R.id.RadioGroup);
+        buttonGo = findViewById(R.id.Go);
+
+        buttonGo.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View v) {
+
+                radioButtonSelectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = findViewById(radioButtonSelectedId);
+                switch (radioButton.getId()){
+                    case R.id.threethree:
+                        toActivityTroisFoisTrois();
+                        break;
+                    case R.id.fivefive:
+                        toActivityCinqFoisCinq();
+                        break;
+                }
+            }
+        });
+    }
+
+    public void toActivityTroisFoisTrois() {
+        myIntent = new Intent(this,Main2Activity.class);
+        startActivity(myIntent);
 
     }
 
-    public void OnePlayer(View view) {
-        myIntent = new Intent(this,Main2Activity.class);
-        bundle.putInt("playerVsComputer",1);
-        myIntent.putExtras(bundle);
+    public void toActivityCinqFoisCinq() {
+        myIntent = new Intent(this,Main4Activity.class);
         startActivity(myIntent);
-    }
 
-    public void TwoPlayer(View view) {
-        myIntent = new Intent(this,Main2Activity.class);
-        bundle.putInt("playerVsPlayer",2);
-        myIntent.putExtras(bundle);
-        startActivity(myIntent);
+
     }
 }
