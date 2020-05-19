@@ -9,19 +9,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
-        <Button
+        <TextView
+            android:id="@+id/textViewP1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Back"
-            android:onClick="BackFirstActivity"/>
-        <Button
+            android:layout_marginTop="20dp"
+            android:text="Player1 : 0"
+            android:textColor="#FFFFFF"
+            android:fontFamily="casual"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewP2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Player2 : 0"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="music IN/OFF"
-            android:onClick="stopMusic"/>
+            android:textColor="#FFFFFF"
+            android:fontFamily="casual"
+            android:textSize="30sp" />
 
     </RelativeLayout>
 
@@ -103,21 +110,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
-        <TextView
-            android:id="@+id/textViewP1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Player1 : 0"
-            android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/textViewP2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Player2 : 0"
-            android:layout_alignParentRight="true"
-            android:textSize="30sp" />
-
+<!--
         <Button
             android:id="@+id/button_reset"
             android:layout_width="150dp"
@@ -127,7 +121,63 @@
             android:layout_below="@id/textViewP1"
             android:textStyle="bold"
 
-            android:text="reset" />
+            android:text="reset" /> -->
+      <!--  <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Back" />-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_Back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            app:maxImageSize="75dp"
+            android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+            app:fabSize="normal"
+            app:elevation="20dp"
+            app:backgroundTint="@color/colorPrimary" />
+       <!-- <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_pause_black_24dp"
+            android:text="music IN/OFF"
+            android:onClick="stopMusic"/>-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_Music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            app:maxImageSize="55dp"
+            android:src="@drawable/ic_pause_black_24dp"
+            app:fabSize="normal"
+            app:elevation="20dp"
+            app:backgroundTint="@color/colorPrimary"
+            android:layout_alignParentRight="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_Reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            app:maxImageSize="55dp"
+            android:src="@drawable/ic_replay_black_24dp"
+            app:fabSize="normal"
+            app:elevation="20dp"
+            app:backgroundTint="@color/colorPrimary"/>
+
+
+
 
     </RelativeLayout>
 

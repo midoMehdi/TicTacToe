@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Random;
 public class Main3Activity extends AppCompatActivity implements View.OnClickListener {
     private Button[][] buttons = new Button[3][3];
@@ -19,11 +22,14 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
     private int player2Points = 0;
     private TextView textViewPlayer1;
     private TextView textViewPLayer2;
-    private Button resetButton;
+    //private Button resetButton;
     Bundle bundle;
     int codePlayerVsPlayer = 10; //initialisation différente du vrai code.
     int codePlayerVsComputer = 11;//initialisation différente du vrai code.
     MediaPlayer musicNCS;
+    FloatingActionButton floatingActionButtonReset;
+    FloatingActionButton floatingActionButtonMusic;
+    FloatingActionButton floatingActionButtonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +38,10 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
         playMusic();
         textViewPlayer1 = findViewById(R.id.textViewP1);
         textViewPLayer2 = findViewById(R.id.textViewP2);
-        resetButton = findViewById(R.id.button_reset);
+        //resetButton = findViewById(R.id.button_reset);
+        floatingActionButtonReset = findViewById(R.id.floating_action_button_Reset);
+        floatingActionButtonMusic = findViewById(R.id.floating_action_button_Music);
+        floatingActionButtonBack = findViewById(R.id.floating_action_button_Back);
         bundle = getIntent().getExtras();
         codePlayerVsPlayer = bundle.getInt("playerVsPlayer");
         codePlayerVsComputer = bundle.getInt("playerVsComputer");
@@ -44,12 +53,33 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
                 buttons[i][j].setOnClickListener(this);
             }
         }
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        /*resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textViewPlayer1.setText("Player1 : "+0);
                 textViewPLayer2.setText("Player2 : "+0);
                 resetBoard();
+            }
+        });*/
+        floatingActionButtonReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textViewPlayer1.setText("Player1 : "+0);
+                textViewPLayer2.setText("Player2 : "+0);
+                resetBoard();
+            }
+        });
+        floatingActionButtonMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopMusic();
+
+            }
+        });
+        floatingActionButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BackFirstActivity();
             }
         });
     }
@@ -333,7 +363,7 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
         player2Turn = true;
     }
 
-    public void BackFirstActivity(View view) {
+    public void BackFirstActivity() {
         if (musicNCS != null){
             musicNCS.stop();
         }
@@ -348,7 +378,7 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
         musicNCS.start();
     }
 
-    public void stopMusic(View view) {
+    public void stopMusic() {
         if (musicNCS != null){
             musicNCS.stop();
             musicNCS = null;
