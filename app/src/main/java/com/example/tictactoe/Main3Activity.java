@@ -29,7 +29,6 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
     FloatingActionButton floatingActionButtonReset;
     FloatingActionButton floatingActionButtonMusic;
     FloatingActionButton floatingActionButtonBack;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -337,7 +336,12 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
     }
     private void player2Wins(){
         player2Points++;
-        Toast.makeText(this,"PLayer 2 wins!",Toast.LENGTH_LONG).show();
+        if (codePlayerVsPlayer != 2){
+            Toast.makeText(this,"Computer wins!",Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this,"PLayer 2 wins!",Toast.LENGTH_LONG).show();
+        }
         updatePointsText();
         resetBoard();
         init();
