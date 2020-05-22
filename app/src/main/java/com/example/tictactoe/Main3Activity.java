@@ -22,7 +22,6 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
     private int player2Points = 0;
     private TextView textViewPlayer1;
     private TextView textViewPLayer2;
-    //private Button resetButton;
     Bundle bundle;
     int codePlayerVsPlayer = 10; //initialisation différente du vrai code.
     int codePlayerVsComputer = 11;//initialisation différente du vrai code.
@@ -38,13 +37,15 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
         playMusic();
         textViewPlayer1 = findViewById(R.id.textViewP1);
         textViewPLayer2 = findViewById(R.id.textViewP2);
-        //resetButton = findViewById(R.id.button_reset);
         floatingActionButtonReset = findViewById(R.id.floating_action_button_Reset);
         floatingActionButtonMusic = findViewById(R.id.floating_action_button_Music);
         floatingActionButtonBack = findViewById(R.id.floating_action_button_Back);
         bundle = getIntent().getExtras();
         codePlayerVsPlayer = bundle.getInt("playerVsPlayer");
         codePlayerVsComputer = bundle.getInt("playerVsComputer");
+        if (codePlayerVsPlayer != 2){
+            textViewPLayer2.setText("Computer : "+0);
+        }
         for (int i = 0 ; i < 3 ; i++){
             for (int j = 0 ; j < 3 ; j++){
                 String buttonId = "button_"+i + j;
@@ -53,19 +54,18 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
                 buttons[i][j].setOnClickListener(this);
             }
         }
-        /*resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textViewPlayer1.setText("Player1 : "+0);
-                textViewPLayer2.setText("Player2 : "+0);
-                resetBoard();
-            }
-        });*/
         floatingActionButtonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textViewPlayer1.setText("Player1 : "+0);
-                textViewPLayer2.setText("Player2 : "+0);
+                if (codePlayerVsPlayer != 2){
+                    textViewPLayer2.setText("Computer : "+0);
+                }
+                else {
+                    textViewPLayer2.setText("Player2 : "+0);
+                }
+                player1Points = 0;
+                player2Points = 0;
                 resetBoard();
             }
         });
@@ -85,10 +85,15 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
     }
     private void playerVSplayer(View v){
         if (player1Turn){
+
             ((Button) v).setText("X");
+            //((Button) v).setTextColor(Color.parseColor("#ffb74d"));
+
         }
         else {
+
             ((Button) v).setText("O");
+            //((Button) v).setTextColor(Color.parseColor("#ffffff"));
         }
         countRound++;
         if (checkForWin()){
@@ -346,7 +351,13 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
 
     private void updatePointsText() {
         textViewPlayer1.setText("Player1 : "+player1Points);
-        textViewPLayer2.setText("Player2 : "+player2Points);
+        if (codePlayerVsPlayer != 2){
+            textViewPLayer2.setText("Computer : "+player2Points);
+        }
+        else {
+            textViewPLayer2.setText("Player2 : "+player2Points);
+        }
+
     }
 
     private void resetBoard(){
@@ -387,5 +398,20 @@ public class Main3Activity extends AppCompatActivity implements View.OnClickList
             musicNCS = MediaPlayer.create(this,R.raw.song);
             musicNCS.start();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (musicNCS != null){
+            musicNCS.stop();
+            musicNCS = null;
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        playMusic();
     }
 }

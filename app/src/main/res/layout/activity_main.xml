@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/logoText"
             android:layout_width="wrap_content"
@@ -21,13 +20,11 @@
             android:fontFamily="cursive"
             android:textSize="90dp"
             tools:ignore="NotSibling" />
-
         <RadioGroup
             android:id="@+id/RadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
-
             <RadioButton
                 android:id="@+id/threethree"
                 android:layout_width="match_parent"
@@ -40,11 +37,9 @@
                 android:textColor="#E1F5FE"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
             <RadioButton
                 android:id="@+id/fivefive"
                 android:layout_marginTop="20dp"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="cursive"
@@ -55,11 +50,9 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
         </RadioGroup>
-
         <Button
             android:id="@+id/Go"
             android:layout_width="250dp"
-
             android:layout_height="50dp"
             android:layout_below="@+id/RadioGroup"
             android:layout_centerHorizontal="true"
@@ -68,15 +61,8 @@
             android:text="Play"
             android:fontFamily="cursive"
             android:textAllCaps="false"
-
-
             android:textColor="#FFFFFF"
             android:textSize="30dp"
             android:textStyle="bold" />
-
-
-
-
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,11 +2,15 @@ package com.example.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class Main4Activity extends AppCompatActivity implements View.OnClickListener {
     private Button[][] buttons = new Button[8][8];
@@ -17,15 +21,21 @@ public class Main4Activity extends AppCompatActivity implements View.OnClickList
     private int player2Points = 0;
     private TextView textViewPlayer1;
     private TextView textViewPLayer2;
-    private Button resetButton;
+    MediaPlayer musicNCS;
+    private FloatingActionButton floatingActionButtonReset;
+    private FloatingActionButton floatingActionButtonBack;
+    private FloatingActionButton floatingActionButtonMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        playMusic();
         setContentView(R.layout.activity_main4);
+        floatingActionButtonReset = findViewById(R.id.floating_action_button_Reset_five_for_five);
+        floatingActionButtonBack = findViewById(R.id.floating_action_button_Back_five_for_five);
+        floatingActionButtonMusic = findViewById(R.id.floating_action_button_Music_five_for_five);
         textViewPlayer1 = findViewById(R.id.textViewP1);
-        textViewPLayer2 = findViewById(R.id.plyr1VsPlyr2);
-        resetButton = findViewById(R.id.button_reset);
+        textViewPLayer2 = findViewById(R.id.textViewP2);
         for (int i = 0 ; i < 8 ; i++){
             for (int j = 0 ; j < 8 ; j++){
                 String buttonId = "button_"+i + j;
@@ -34,7 +44,7 @@ public class Main4Activity extends AppCompatActivity implements View.OnClickList
                 buttons[i][j].setOnClickListener(this);
             }
         }
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textViewPlayer1.setText("Player1 : "+0);
@@ -42,6 +52,19 @@ public class Main4Activity extends AppCompatActivity implements View.OnClickList
                 resetBoard();
             }
         });
+        floatingActionButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BackFirstActivity();
+            }
+        });
+        floatingActionButtonMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopMusic();
+            }
+        });
+
     }
     private void playerVsPLayer(View v){
         if (player1Turn){
@@ -117,14 +140,17 @@ public class Main4Activity extends AppCompatActivity implements View.OnClickList
          * Check for diagonalement  première forme"\"
          * */
         for (int i = 0 ; i < 4 ; i++){
-            if (filed[i][i].equals(filed[i+1][i+1])
-                    && filed[i+1][i+1].equals(filed[i+2][i+2])
-                    && filed[i+2][i+2].equals(filed[i+3][i+3])
-                    && filed[i+3][i+3].equals(filed[i+4][i+4])
-                    && !filed[i][i].equals("")){
+            for(int j = 0 ; j < 4 ; j++){
+                if (filed[i][j].equals(filed[i+1][j+1])
+                        && filed[i+1][j+1].equals(filed[i+2][j+2])
+                        && filed[i+2][j+2].equals(filed[i+3][j+3])
+                        && filed[i+3][j+3].equals(filed[i+4][j+4])
+                        && !filed[i][j].equals("")){
 
-                return true;
+                    return true;
+                }
             }
+
         }
 
         /**
@@ -178,12 +204,31 @@ public class Main4Activity extends AppCompatActivity implements View.OnClickList
         player1Turn = true;
         player2Turn = true;
     }
+    public void playMusic(){
+        if (musicNCS == null){
+            musicNCS = MediaPlayer.create(this,R.raw.song);
+        }
+        musicNCS.start();
+    }
 
-    public void stopMusic(View view) {
+    public void stopMusic() {
+        if (musicNCS != null){
+            musicNCS.stop();
+            musicNCS = null;
+        }
+        else {
+            musicNCS = MediaPlayer.create(this,R.raw.song);
+            musicNCS.start();
+        }
 
     }
 
-    public void BackFirstActivity(View view) {
+    public void BackFirstActivity() {
+        if (musicNCS != null){
+            musicNCS.stop();
+        }
+        Intent myIntent = new Intent(this, MainActivity.class);
+        startActivity(myIntent);
 
     }
 
@@ -194,5 +239,20 @@ public class Main4Activity extends AppCompatActivity implements View.OnClickList
                 buttons[i][j].setText("");
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (musicNCS != null){
+            musicNCS.stop();
+            musicNCS = null;
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        playMusic();
     }
 }

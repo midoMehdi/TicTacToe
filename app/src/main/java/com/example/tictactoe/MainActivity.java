@@ -35,14 +35,16 @@ public class MainActivity extends AppCompatActivity {
         logoText.getPaint().setShader(shader);
         radioGroup = findViewById(R.id.RadioGroup);
         buttonGo = findViewById(R.id.Go);
-
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-
                 radioButtonSelectedId = radioGroup.getCheckedRadioButtonId();
                 radioButton = findViewById(radioButtonSelectedId);
+                if (radioButton == null){
+                    Toast.makeText(MainActivity.this,"You Should choose 3X3 or 5X5",Toast.LENGTH_LONG).show();
+                    return;
+                }
                 switch (radioButton.getId()){
                     case R.id.threethree:
                         toActivityTroisFoisTrois();
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     public void toActivityTroisFoisTrois() {
         myIntent = new Intent(this,Main2Activity.class);
         startActivity(myIntent);
